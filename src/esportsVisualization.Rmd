@@ -1,0 +1,93 @@
+---
+title: "eSports_Visualizations"
+output: html_notebook
+---
+
+#import libraries
+```{r}
+library("tidyverse")
+```
+
+#import data
+```{r}
+read_csv("esports_revenue_audience.csv")
+```
+
+#format data
+```{r}
+names(esportsRevenue) <- c("year", "estimatedRevenue", "frequentViewers", "occasionalViewers", "totalViewers")
+```
+
+
+# bar chart
+```{r}
+ggplot(data = esportsRevenue, aes(x =year, y = estimatedRevenue, fill = as.factor(estimatedRevenue)))+
+  geom_bar(stat="identity")+
+  scale_fill_brewer(palette = "Set1")+
+  theme(legend.position="none")+
+  #coord_flip()+
+  labs(x="", y="Estimated Revenue", title = "Estimated Revenue per Year", subtitle = "in millions")
+  
+```
+
+# pie chart
+```{r}
+ggplot(data = esportsRevenue, aes(x ="", y = as.factor(estimatedRevenue), fill= as.factor(year)))+
+  geom_bar(stat="identity", width=1, color = "white")+
+  scale_fill_brewer(palette = "Set3") +
+  coord_polar("y", start = 0)+
+  theme_void()+
+  ggtitle("Estimated Revenue per Year")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(fill = "Year")
+```
+
+# scatter plot
+```{r}
+ggplot(data = esportsRevenue, aes(x = year))+
+  geom_point(
+    aes(y=frequentViewers),
+    color = "blue",
+    size = 5,
+    stroke = 1,
+    alpha=0.5
+  )+
+  geom_point(
+    aes(y=occasionalViewers),
+    color = "orange",
+    size = 5,
+    stroke = 1,
+    alpha=0.5
+  )+
+  geom_point(
+    aes(y=totalViewers),
+    color = "green",
+    size = 5,
+    stroke = 1,
+    alpha=0.5
+  )+
+  labs(x = "Year", y = "Viewer Count", subtitle = "(in millions)")+
+  ggtitle("Viewer Distribution per Year ")
+```
+
+# line chart
+```{r}
+ggplot(data = esportsRevenue, aes(x = year))+
+    geom_line(
+    aes(y=estimatedRevenue),
+    color = "red",
+    size = 2
+  )+
+  ggtitle("Estimated Renvenue")+
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(x = "Year", y="Estimated Revenue (in millions)")
+```
+
+# storing plot as file
+```{r}
+ggsave("line.png")
+```
+
+
+
+

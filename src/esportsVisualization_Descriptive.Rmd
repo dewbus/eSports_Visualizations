@@ -1,0 +1,67 @@
+---
+title: "eSports_Visualizations"
+output: html_notebook
+---
+
+#import libraries
+```{r}
+library("tidyverse")
+```
+
+#import data
+```{r}
+esportsRevenue <- read_csv("C:\\Users\\louis\\Desktop\\cap4786\\week1\\esports_revenue_audience.csv")
+```
+
+#format data
+```{r}
+names(esportsRevenue) <- c("year", "estimatedRevenue", "frequentViewers", "occasionalViewers", "totalViewers")
+esportsRevenue
+```
+
+# box plot
+```{r}
+byYear <- group_by(esportsRevenue, year)
+ggplot(esportsRevenue, aes( y = totalViewers))+
+  geom_boxplot(fill= "blue", alpha = 0.1)+
+  labs(x = "", y="Total Viewers", title = "Total eSports Viewers ", subtitle = "Esports global revenue and audience in 2012-2019")
+
+```
+
+# histogram
+```{r}
+
+ggplot(esportsRevenue, aes(x = estimatedRevenue))+
+  geom_histogram(stat = "count")+
+  
+  
+  labs(x = "Year", y = "Frequency", subtitle = "Esports global revenue and audience in 2012-2019")+
+  ggtitle("Estimated Revenue per Year")+
+  #theme(plot.title = element_text(hjust = 0.5))
+  scale_y_continuous(limits = c(0, 1))+
+  scale_x_binned()
+
+  
+```
+
+
+
+
+# violin plot
+```{r}
+ggplot(esportsRevenue, aes(x = estimatedRevenue, y = totalViewers, fill = year))+
+  geom_violin(fill = "green", alpha = 0.1)+
+  
+  labs(x = "Estimated Revenue", y = "Viewer Count", subtitle = "Esports global revenue and audience in 2012-2019")+
+  ggtitle("Viewer Distribution per Estimated Revenue ")
+```
+
+
+# storing plot as file
+```{r}
+ggsave("img.png")
+```
+
+
+
+
